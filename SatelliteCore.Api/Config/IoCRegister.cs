@@ -14,13 +14,14 @@ namespace SatelliteCore.Api.Config
             AddRegisterServices(service);
             AddRegisterOthers(service);
             return service;
-        }
+        }//ControlCalidad
         private static IServiceCollection AddRegisterRepositories(this IServiceCollection service)
         {
             service.AddScoped<IUsuarioRepository, UsuarioRepository>();
             service.AddScoped<IAccesosRepository, AccesosRepository>();
             service.AddScoped<ICommonRepository, CommonRepository>();
             service.AddScoped<IPronosticoRepository, PronosticoRepository>();
+            service.AddScoped<IControlCalidadRepository, ControlCalidadRepository>();
 
             return service;
         }
@@ -31,6 +32,7 @@ namespace SatelliteCore.Api.Config
             service.AddScoped<IValidacionesServices, ValidacionesServices>();
             service.AddScoped<ICommonServices, CommonServices>();
             service.AddScoped<IPronosticoServices, PronosticoServices>();
+            service.AddScoped<IControlCalidadServices, ControlCalidadServices>();
             return service;
         }
 
