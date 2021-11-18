@@ -36,5 +36,9 @@ namespace SatelliteCore.Api.Services
         {
             return await _controlCalidadRepository.RegistrarLote(lote);
         }
+        public async Task<(List<CotizacionEntity>, int)> ListarCotizaciones(DatosListarCotizacionesPaginado datos)
+        {
+            return await _controlCalidadRepository.ListarCotizaciones(datos);
+        }
     }
 }

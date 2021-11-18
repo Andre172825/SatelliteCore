@@ -13,5 +13,6 @@ namespace SatelliteCore.Api.DataAccess.Contracts.Repository
         public bool RegistrarCertificado(CertificadoEsterilizacionEntity certificado);
         public Task<(List<LoteEntity>, int)> ListarLotes(DatosLote datos);
         public Task<int> RegistrarLote(LoteEntity lote);
+        public Task<(List<CotizacionEntity>, int)> ListarCotizaciones(DatosListarCotizacionesPaginado datos);
     }
 }

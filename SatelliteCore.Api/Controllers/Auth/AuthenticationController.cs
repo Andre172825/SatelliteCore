@@ -28,7 +28,7 @@ namespace SatelliteCore.Api.Controllers.Auth
             {
                 var listaErrores = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage).ToList();
                 ResponseModel<IEnumerable<string>> responseError = 
-                        new ResponseModel<IEnumerable<string>>(false, Constants.MODEL_VALIDATION_FAILED, listaErrores);
+                        new ResponseModel<IEnumerable<string>>(false, Constant.MODEL_VALIDATION_FAILED, listaErrores);
                 return BadRequest(responseError);
             }
 
@@ -40,7 +40,7 @@ namespace SatelliteCore.Api.Controllers.Auth
                 return Unauthorized(responseSuccess);
             }
 
-            ResponseModel<AuthResponse> responseSuccesss = new ResponseModel<AuthResponse>(true, Constants.MESSAGE_SUCCESS, usuario);
+            ResponseModel<AuthResponse> responseSuccesss = new ResponseModel<AuthResponse>(true, Constant.MESSAGE_SUCCESS, usuario);
             return Ok(responseSuccesss);
         }
     }

@@ -9,5 +9,7 @@ namespace SatelliteCore.Api.Models.Config
         string contextSpring { get; }
         string JWTIssuer { get; }
         string JWTAudience { get; }
+        string ReportControlDeCalidad { get; }
+        string ReportComercialFormatoCotizacion { get; }
     }
 }

@@ -7,6 +7,7 @@ namespace SatelliteCore.Api.Models.Entities
     public class CertificadoEsterilizacionEntity
     {
         public int Id { get; set; }
+        public string CodigoCertificado { get; set; }
         public DateTime FechaEmision { get; set; }
         public string OrdenServicio { get; set; }
         public string Cliente { get; set; }

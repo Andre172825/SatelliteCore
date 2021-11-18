@@ -1,4 +1,5 @@
 ﻿using SatelliteCore.Api.DataAccess.Contracts.Repository;
+using SatelliteCore.Api.Models.Generic;
 using SatelliteCore.Api.Models.Request;
 using SatelliteCore.Api.Models.Response;
 using SatelliteCore.Api.Services.Contracts;
@@ -35,6 +36,11 @@ namespace SatelliteCore.Api.Services
         public async Task<(IEnumerable<PedidosCreadosAutoLogModel> ListaPedidos, int TotalRegistros)> ListaPedidosCreadoAuto(PedidosCreadosDataModel filtro)
         {
             return await _pronosticoRepository.ListaPedidosCreadoAuto(filtro);
+        }
+
+        public async Task<SeguimientoCandMPAGenericModel> ListaSeguimientoCandidatosMP(string regla)
+        {
+            return await _pronosticoRepository.ListaSeguimientoCandidatosMP(regla);
         }
     }
 }

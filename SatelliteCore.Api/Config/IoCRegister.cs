@@ -22,6 +22,7 @@ namespace SatelliteCore.Api.Config
             service.AddScoped<ICommonRepository, CommonRepository>();
             service.AddScoped<IPronosticoRepository, PronosticoRepository>();
             service.AddScoped<IControlCalidadRepository, ControlCalidadRepository>();
+            service.AddScoped<IComercialRepository, ComercialRepository>();
 
             return service;
         }
@@ -33,6 +34,7 @@ namespace SatelliteCore.Api.Config
             service.AddScoped<ICommonServices, CommonServices>();
             service.AddScoped<IPronosticoServices, PronosticoServices>();
             service.AddScoped<IControlCalidadServices, ControlCalidadServices>();
+            service.AddScoped<IComercialServices, ComercialServices>();
             return service;
         }
 

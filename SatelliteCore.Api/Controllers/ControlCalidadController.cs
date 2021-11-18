@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SatelliteCore.Api.CrossCutting.Config;
+using SatelliteCore.Api.Models.Config;
 using SatelliteCore.Api.Models.Entities;
 using SatelliteCore.Api.Models.Generic;
 using SatelliteCore.Api.Models.Request;
@@ -21,28 +22,37 @@ namespace SatelliteCore.Api.Controllers
     public class ControlCalidadController : ControllerBase
     {
         private readonly IControlCalidadServices _controlCalidadServices;
-        public ControlCalidadController(IControlCalidadServices controlCalidadServices)
+        private readonly IAppConfig _appConfig;
+        public ControlCalidadController(IControlCalidadServices controlCalidadServices, IAppConfig appConfig)
         {
             _controlCalidadServices = controlCalidadServices;
+            _appConfig = appConfig;
         }
 
         [HttpPost("ListarCertificados")]
         public async Task<ActionResult> ListarCertificados(DatosListarCertificadoPaginado datos)
         {
-            if (!ModelState.IsValid)
-            {
-                ResponseModel<string> responseError =
-                        new ResponseModel<string>(false, Constants.MODEL_VALIDATION_FAILED, "");
+            try {
+                if (!ModelState.IsValid)
+                {
+                    ResponseModel<string> responseError =
+                            new ResponseModel<string>(false, Constant.MODEL_VALIDATION_FAILED, "");
 
-                return BadRequest(responseError);
+                    return BadRequest(responseError);
+                }
+
+                (List<CertificadoEsterilizacionEntity> lista, int totalRegistros) certificados = await _controlCalidadServices.ListarCertificados(datos);
+
+                PaginacionModel<CertificadoEsterilizacionEntity> response
+                        = new PaginacionModel<CertificadoEsterilizacionEntity>(certificados.lista, datos.Pagina, datos.RegistrosPorPagina, certificados.totalRegistros);
+                return Ok(response);
             }
+            catch(Exception ex)
+            {
 
-            (List<CertificadoEsterilizacionEntity> lista, int totalRegistros) certificados = await _controlCalidadServices.ListarCertificados(datos);
-
-            PaginacionModel<CertificadoEsterilizacionEntity> response
-                    = new PaginacionModel<CertificadoEsterilizacionEntity>(certificados.lista, datos.Pagina, datos.RegistrosPorPagina, certificados.totalRegistros);
-
-            return Ok(response);
+                return BadRequest(ex.Message);
+            }
+           
         }
 
         [HttpPost("RegistrarCertificado")]
@@ -61,7 +71,7 @@ namespace SatelliteCore.Api.Controllers
             if (!ModelState.IsValid)
             {
                 ResponseModel<string> responseError =
-                        new ResponseModel<string>(false, Constants.MODEL_VALIDATION_FAILED, "");
+                        new ResponseModel<string>(false, Constant.MODEL_VALIDATION_FAILED, "");
 
                 return BadRequest(responseError);
             }
@@ -77,7 +87,11 @@ namespace SatelliteCore.Api.Controllers
         [HttpPost("GenerarReporte")]
         public async Task<ActionResult> GenerarReporte(DatosReporte datos)
         {
-            var theURL = "http://laplt-tic/ReportServer/Pages/ReportViewer.aspx?%2fCertificado_Esterilizacion&rs:Command=Render&Id=" + datos.Id.ToString() +"&rs:Format=PDF";
+            string ReporteEsterilizacion = "Certificado_Esterilizacion&rs:Command=Render";
+            string Formato = "&rs:Format=PDF";
+            string Parametros = "&Id=" + datos.Id;
+
+            var theURL = _appConfig.ReportControlDeCalidad + ReporteEsterilizacion + Parametros + Formato;
 
             var httpClientHandler = new HttpClientHandler()
             {
@@ -103,6 +117,25 @@ namespace SatelliteCore.Api.Controllers
 
             return Ok(response);
 
+        }
+
+        [HttpPost("ListarCotizaciones")]
+        public async Task<ActionResult> ListarCotizaciones(DatosListarCotizacionesPaginado datos)
+        {
+            if (!ModelState.IsValid)
+            {
+                ResponseModel<string> responseError =
+                        new ResponseModel<string>(false, Constant.MODEL_VALIDATION_FAILED, "");
+
+                return BadRequest(responseError);
+            }
+
+            (List<CotizacionEntity> lista, int totalRegistros) certificados = await _controlCalidadServices.ListarCotizaciones(datos);
+
+            PaginacionModel<CotizacionEntity> response
+                    = new PaginacionModel<CotizacionEntity>(certificados.lista, datos.Pagina, datos.RegistrosPorPagina, certificados.totalRegistros);
+
+            return Ok(response);
         }
     }
 }

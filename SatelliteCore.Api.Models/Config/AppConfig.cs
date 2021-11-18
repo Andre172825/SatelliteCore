@@ -11,11 +11,12 @@ namespace SatelliteCore.Api.Models.Config
         }
         public string contextSatelliteDB => _configuration.GetSection("ConnectionStrings:SatelliteContext").Value;
         public string contextSpring => _configuration.GetSection("ConnectionStrings:SpringContext").Value;
-
         public int ExpirationTimeInHour => int.Parse(_configuration.GetSection("JWTValidationParameters:ExpTimeInHour").Value);
         public string JWTSecretKey => _configuration.GetSection("JWTValidationParameters:SecretKey").Value;
         public string JWTIssuer => _configuration.GetSection("JWTValidationParameters:Issuer").Value;
         public string JWTAudience => _configuration.GetSection("JWTValidationParameters:Audience").Value;
+        public string ReportControlDeCalidad => _configuration.GetSection("ReportServer:ControlDeCalidad").Value;
+        public string ReportComercialFormatoCotizacion => _configuration.GetSection("ReportServer:Comercial").Value;
 
     }
 }

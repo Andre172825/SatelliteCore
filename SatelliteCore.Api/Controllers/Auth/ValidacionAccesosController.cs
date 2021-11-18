@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+//using SatelliteCore.Api.Filters;
 
 namespace SatelliteCore.Api.Controllers.Auth
 {
@@ -32,17 +33,17 @@ namespace SatelliteCore.Api.Controllers.Auth
             {
                 var listaErrores = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage).ToList();
                 ResponseModel<IEnumerable<string>> responseError =
-                        new ResponseModel<IEnumerable<string>>(false, Constants.MODEL_VALIDATION_FAILED, listaErrores);
+                        new ResponseModel<IEnumerable<string>>(false, Constant.MODEL_VALIDATION_FAILED, listaErrores);
                 return BadRequest(responseError);
             }
 
             (int codigo, string mensaje) result = await _validacionesServices.ValidarAccesoRuta(model);
 
-            ResponseModel<object> responseSuccesss = new ResponseModel<object>(true, Constants.MESSAGE_SUCCESS, new{ result.codigo, result.mensaje });
+            ResponseModel<object> responseSuccesss = new ResponseModel<object>(true, Constant.MESSAGE_SUCCESS, new{ result.codigo, result.mensaje });
             return Ok(responseSuccesss);
         }
 
-        //[CustomAuthorize("MN0002")]
+        //[PermitCode("MN0002")]
         [HttpGet("validarToken")]
         public ActionResult ValidarToken()
         {

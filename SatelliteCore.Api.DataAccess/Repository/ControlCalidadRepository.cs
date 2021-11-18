@@ -45,9 +45,9 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string script = "SELECT Id, Descripcion, Lote, Expira FROM CC_E_TBMLote WHERE Descripcion LIKE '%' + @descripcion + '%' " +
+                string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%' " +
                                 " ORDER BY Id OFFSET (@pagina - 1) * @registrosPorPagina ROWS FETCH NEXT @registrosPorPagina ROWS ONLY; " +
-                                "SELECT Count(1) FROM CC_E_TBMLote WHERE Descripcion LIKE '%' + @descripcion + '%';";
+                                "SELECT Count(1) FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%';";
                 using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion , datos.Pagina, datos.RegistrosPorPagina, }))
                 {
                     result.ListaLotes = result_db.Read<LoteEntity>().ToList();
@@ -117,10 +117,28 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string sql = "INSERT INTO CC_E_TBMLote(Descripcion, Lote, Expira)" +
+                string sql = "INSERT INTO TBMCCLote(Descripcion, Lote, Expira)" +
                              "VALUES(@Descripcion, @Lote, @Expira)";
 
                 result = await connection.ExecuteAsync(sql, new { lote.Descripcion, lote.Lote, lote.Expira });
+                connection.Dispose();
+            }
+
+            return result;
+        }
+
+        public async Task<(List<CotizacionEntity>, int)> ListarCotizaciones(DatosListarCotizacionesPaginado datos)
+        {
+            (List<CotizacionEntity> ListaCertificados, int totalRegistros) result;
+
+            using (var connection = new SqlConnection(_appConfig.contextSpring))
+            {
+                using (var result_db = await connection.QueryMultipleAsync("usp_COT_ConsultarCotizaciones", datos, commandType: CommandType.StoredProcedure))
+                {
+                    result.ListaCertificados = result_db.Read<CotizacionEntity>().ToList();
+                    result.totalRegistros = result_db.Read<int>().First();
+                }
+
                 connection.Dispose();
             }
 

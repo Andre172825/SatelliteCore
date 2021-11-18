@@ -6,6 +6,6 @@ namespace SatelliteCore.Api.Models.Request
 {
     public struct DatosReporte
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

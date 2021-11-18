@@ -11,6 +11,7 @@ using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using SatelliteCore.Api.Filters;
+using SatelliteCore.Api.Models.Config;
 
 namespace SatelliteCore.Api
 {
@@ -29,6 +30,7 @@ namespace SatelliteCore.Api
             services.AddHttpClient();
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
             services.AddControllers();
+            services.AddScoped<IAppConfig, AppConfig>();
 
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
@@ -75,16 +77,16 @@ namespace SatelliteCore.Api
 
             app.UseRouting();
 
-            app.UseCors(builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            //app.UseCors(builder => builder
+            //        .AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader());
 
             app.UseCors("ApiCorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
