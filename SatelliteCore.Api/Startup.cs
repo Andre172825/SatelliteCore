@@ -75,15 +75,13 @@ namespace SatelliteCore.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
-
             //app.UseCors(builder => builder
             //        .AllowAnyOrigin()
             //        .AllowAnyMethod()
             //        .AllowAnyHeader());
 
             app.UseCors("ApiCorsPolicy");
-
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 

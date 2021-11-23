@@ -36,16 +36,14 @@ namespace SatelliteCore.Api.Controllers
 
             PaginacionModel<PedidosCreadosAutoLogModel> PedidosPaginados = 
                 new PaginacionModel<PedidosCreadosAutoLogModel>((List<PedidosCreadosAutoLogModel>)result.ListaPedidos, filtro.Pagina, filtro.RegistrosPorPagina, result.TotalRegistros);
-
+                
             return Ok(PedidosPaginados);
         }
 
         [HttpGet("SegimientoCandidatosMP")]
         public async Task<ActionResult> SegimientoCandidatosMP(string regla)
         {
-
             SeguimientoCandMPAGenericModel listaCandidatos = await _pronosticoServices.ListaSeguimientoCandidatosMP(regla);
-
             return Ok(listaCandidatos);
         }
     }

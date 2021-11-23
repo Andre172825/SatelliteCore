@@ -1,8 +1,6 @@
-﻿using SatelliteCore.Api.CrossCutting.Helpers;
-using SatelliteCore.Api.DataAccess.Contracts.Repository;
+﻿using SatelliteCore.Api.DataAccess.Contracts.Repository;
 using SatelliteCore.Api.Models.Entities;
 using SatelliteCore.Api.Models.Request;
-using SatelliteCore.Api.Models.Response;
 using SatelliteCore.Api.Services.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,9 +25,9 @@ namespace SatelliteCore.Api.Services
             return await _controlCalidadRepository.ListarLotes(datos);
         }
 
-        public  bool RegistrarCertificado(CertificadoEsterilizacionEntity certificado)
+        public bool RegistrarCertificado(CertificadoEsterilizacionEntity certificado)
         {
-            return  _controlCalidadRepository.RegistrarCertificado(certificado);
+            return _controlCalidadRepository.RegistrarCertificado(certificado);
         }
 
         public async Task<int> RegistrarLote(LoteEntity lote)

@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Dapper;
+using SatelliteCore.Api.DataAccess.Contracts.Repository;
+using SatelliteCore.Api.Models.Config;
+using SatelliteCore.Api.Models.Entities;
+using SatelliteCore.Api.Models.Request;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using SatelliteCore.Api.DataAccess.Contracts.Repository;
-using SatelliteCore.Api.Models.Config;
-using SatelliteCore.Api.Models.Entities;
-using SatelliteCore.Api.Models.Request;
-using SatelliteCore.Api.Models.Request.Cotizacion;
-using SatelliteCore.Api.Models.Response;
 
 namespace SatelliteCore.Api.DataAccess.Repository
 {
@@ -86,7 +84,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
             {
                 using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
                 {
-                    using (var result_db = await connection.QueryMultipleAsync("usp_RegistrarCotizacionGenerada", new { datos.IdFormato, datos.NroDocumento}, commandType: CommandType.StoredProcedure))
+                    using (var result_db = await connection.QueryMultipleAsync("usp_RegistrarCotizacionGenerada", new { datos.IdFormato, datos.NroDocumento }, commandType: CommandType.StoredProcedure))
                     {
                         IdCotizacionGenerada = result_db.Read<int>().First();
                     }
@@ -123,7 +121,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
                 }
                 return 1;
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 return 0;
             }

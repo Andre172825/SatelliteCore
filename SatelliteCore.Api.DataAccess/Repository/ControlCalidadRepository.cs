@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using Dapper;
+﻿using Dapper;
 using SatelliteCore.Api.DataAccess.Contracts.Repository;
 using SatelliteCore.Api.Models.Config;
 using SatelliteCore.Api.Models.Entities;
 using SatelliteCore.Api.Models.Request;
-using SatelliteCore.Api.Models.Response;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SatelliteCore.Api.DataAccess.Repository
 {
@@ -48,11 +47,11 @@ namespace SatelliteCore.Api.DataAccess.Repository
                 string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%' " +
                                 " ORDER BY Id OFFSET (@pagina - 1) * @registrosPorPagina ROWS FETCH NEXT @registrosPorPagina ROWS ONLY; " +
                                 "SELECT Count(1) FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%';";
-                using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion , datos.Pagina, datos.RegistrosPorPagina, }))
+                using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion, datos.Pagina, datos.RegistrosPorPagina, }))
                 {
                     result.ListaLotes = result_db.Read<LoteEntity>().ToList();
                     result.totalRegistros = result_db.Read<int>().First();
-                }                
+                }
                 connection.Dispose();
             }
 

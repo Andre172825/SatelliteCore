@@ -27,7 +27,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
             using (var connection = new SqlConnection(_appConfig.contextSpring))
             {
                 string sql = "DECLARE @FechaActual DATETIME = GETDATE(), @Periodo CHAR(6) = CONVERT(CHAR(6), GETDATE(), 112) "
-                    + "; WITH Temp_PronosticoPeriodo AS(SELECT '01000000' CompaniaSocio, ItemSpring FROM ML_Pronostico WHERE Periodo = @Periodo AND Regla = 'PTSUAR1') "
+                    + "; WITH Temp_PronosticoPeriodo AS(SELECT '01000000' CompaniaSocio, ItemSpring FROM ML_Pronostico a WHERE Periodo = @Periodo AND LEFT(a.Regla, 2) IN ('PT','Ex')) "
                     + ",temp_PedidosItemPronostico AS(SELECT a.ItemSpring Item, b.NumeroLote, c.PedidoNumero, c.FechaPreparacion, DATEDIFF(DAY, c.FechaPreparacion, @FechaActual) DifDias, b.CantidadPedida, b.AlmacenCodigo "
                     + "FROM Temp_PronosticoPeriodo a INNER JOIN EP_PedidoDetalle b ON a.ItemSpring = b.Item AND a.CompaniaSocio = b.CompaniaSocio "
                     + "INNER JOIN EP_Pedido c ON b.CompaniaSocio = c.CompaniaSocio AND b.PedidoNumero = c.PedidoNumero AND c.ESTADO<> 'AN' AND c.TipoVenta = 'STP' "

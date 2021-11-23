@@ -14,7 +14,7 @@ namespace SatelliteCore.Api.Config
             AddRegisterServices(service);
             AddRegisterOthers(service);
             return service;
-        }//ControlCalidad
+        }
         private static IServiceCollection AddRegisterRepositories(this IServiceCollection service)
         {
             service.AddScoped<IUsuarioRepository, UsuarioRepository>();

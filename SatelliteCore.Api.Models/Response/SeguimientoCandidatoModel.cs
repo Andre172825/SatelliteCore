@@ -7,6 +7,7 @@ namespace SatelliteCore.Api.Models.Response
         public int Candidato { get; set; }
         public string CodSut { get; set; }
         public string Item { get; set; }
+        public string Regla { get; set; }
         public string Descripcion { get; set; }
         public decimal CoeficienteVariacion { get; set; }
         public int Pronostico { get; set; }

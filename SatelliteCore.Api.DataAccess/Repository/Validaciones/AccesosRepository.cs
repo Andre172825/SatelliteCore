@@ -24,7 +24,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var satelliteContext = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                result = await satelliteContext.QuerySingleAsync<(int codigo, string mensaje)>("usp_Validacion_AccesoRutaSatelite", 
+                result = await satelliteContext.QuerySingleAsync<(int codigo, string mensaje)>("usp_Validacion_AccesoRutaSatelite_prueba", 
                                     new { datos.IdUsuario, datos.Apellido, datos.OpcionMenu }, commandType: CommandType.StoredProcedure);
                 satelliteContext.Dispose();
             }
