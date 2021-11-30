@@ -67,7 +67,7 @@ namespace SatelliteCore.Api.Controllers
             catch(Exception ex)
             {
                 ResponseModel<string> response
-                        = new ResponseModel<string>(true, "No se completó el registro", ex.Message);
+                        = new ResponseModel<string>(true, "No se completó ", ex.Message);
                 return BadRequest(response);
             }
             
