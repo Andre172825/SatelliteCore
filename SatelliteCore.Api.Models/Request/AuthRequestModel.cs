@@ -2,12 +2,13 @@
 
 namespace SatelliteCore.Api.Models.Request
 {
-    public class AuthRequestModel
+    public struct AuthRequestModel
     {
-        [Required(ErrorMessage = "El usuario es obligatorio")]
-        //[EmailAddress(ErrorMessage = "Formato de correo no válido")]
-        public string Correo { get; set; }
-        [Required(ErrorMessage ="La contraseña es obligatoria")]
+        //[Required(ErrorMessage = "El usuario es obligatorio")]
+        public string Usuario { get; set; }
+
+
+        //[Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Clave { get; set; }
     }
 }

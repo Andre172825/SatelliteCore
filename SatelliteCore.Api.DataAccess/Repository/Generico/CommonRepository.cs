@@ -54,7 +54,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                lista = (List<MenuEntity>) await connection.QueryAsync<MenuEntity>("usp_ObtenerMenuSatelitexUsuario_PRUEBA", 
+                lista = (List<MenuEntity>) await connection.QueryAsync<MenuEntity>("usp_ObtenerMenuSatelitexUsuario", 
                             new { usuario }, commandType: CommandType.StoredProcedure);
 
                 connection.Dispose();

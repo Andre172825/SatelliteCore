@@ -26,7 +26,7 @@ namespace SatelliteCore.Api.Controllers.Auth
         }
 
         [HttpPost("ValidarAccesoRuta")]
-        public async Task<IActionResult> AuthenticateUser([FromBody] ValidacionRutaDataModel model)
+        public async Task<IActionResult> AuthenticateUser(ValidacionRutaDataModel model)
         {
 
             if (!ModelState.IsValid)

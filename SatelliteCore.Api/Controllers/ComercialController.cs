@@ -58,44 +58,62 @@ namespace SatelliteCore.Api.Controllers
         [HttpPost("GenerarReporteCotizacion")]
         public async Task<ActionResult> GenerarReporteCotizacion(DatosReporteCotizacion datos)
         {
-            string Reporte = string.Empty;
-            //Validación para elegir reporte
-            switch (datos.IdFormato)
+            try
             {
-                case 1: Reporte = "01_Instituto+Nac.+de+Salud+Niño+Sede+San+Borja&rs:Command=Render";
-                    break;
-                case 3: Reporte = "03_Essalud+Incor&rs:Command=Render";
-                    break;
-                case 4: Reporte = "04_Essalud+Apurimac&rs:Command=Render";
-                    break;
-                case 6: Reporte = "06_Essalud+Cusco+Red+Asistencial&rs:Command=Render";
-                    break;
-                case 7: Reporte = "07_Hospital+San+Bartolome&rs:Command=Render";
-                    break;
-                case 10: Reporte = "10_Essalud+Junin&rs:Command=Render";
-                    break;
-                case 11: Reporte = "11_Essalud+Arequipa&rs:Command=Render";
-                    break;
-                default: Reporte = "12_FormatoGeneral&rs:Command=Render";
-                    break;
+                string Reporte = string.Empty;
+                //Validación para elegir reporte
+                switch (datos.IdFormato)
+                {
+                    case 1:
+                        Reporte = "01_Instituto+Nac.+de+Salud+Niño+Sede+San+Borja&rs:Command=Render";
+                        break;
+                    case 3:
+                        Reporte = "03_Essalud+Incor&rs:Command=Render";
+                        break;
+                    case 4:
+                        Reporte = "04_Essalud+Apurimac&rs:Command=Render";
+                        break;
+                    case 6:
+                        Reporte = "06_Essalud+Cusco+Red+Asistencial&rs:Command=Render";
+                        break;
+                    case 7:
+                        Reporte = "07_Hospital+San+Bartolome&rs:Command=Render";
+                        break;
+                    case 10:
+                        Reporte = "10_Essalud+Junin&rs:Command=Render";
+                        break;
+                    case 11:
+                        Reporte = "11_Essalud+Arequipa&rs:Command=Render";
+                        break;
+                    default:
+                        Reporte = "12_FormatoGeneral&rs:Command=Render";
+                        break;
+                }
+                string Formato = "&rs:Format=excel";
+                string Parametros = "&NumeroDocumento=" + datos.NumeroDocumento;
+
+                var theURL = _appConfig.ReportComercialFormatoCotizacion + Reporte + Parametros + Formato;
+
+                var httpClientHandler = new HttpClientHandler()
+                {
+                    UseDefaultCredentials = true
+                };
+
+                HttpClient webClient = new HttpClient(httpClientHandler);
+
+                Byte[] result = await webClient.GetByteArrayAsync(theURL);
+                string base64String = Convert.ToBase64String(result, 0, result.Length);
+                ResponseModel<string> response
+                        = new ResponseModel<string>(true, "El reporte se generó correctamente", base64String);
+                return Ok(response);
             }
-            string Formato = "&rs:Format=excel";
-            string Parametros = "&NumeroDocumento=" + datos.NumeroDocumento;
-
-            var theURL = _appConfig.ReportComercialFormatoCotizacion + Reporte + Parametros + Formato;
-
-            var httpClientHandler = new HttpClientHandler()
+            catch(Exception ex)
             {
-                UseDefaultCredentials = true
-            };
-
-            HttpClient webClient = new HttpClient(httpClientHandler);
-
-            Byte[] result = await webClient.GetByteArrayAsync(theURL);
-            string base64String = Convert.ToBase64String(result, 0, result.Length);
-            ResponseModel<string> response
-                    = new ResponseModel<string>(true, "El reporte se generó correctamente", base64String);
-            return Ok(response);
+                ResponseModel<string> response
+                        = new ResponseModel<string>(true, "El reporte no se generó", ex.Message);
+                return BadRequest(response);
+            }
+            
         }
 
         [HttpPost("RegistrarRespuestas")]

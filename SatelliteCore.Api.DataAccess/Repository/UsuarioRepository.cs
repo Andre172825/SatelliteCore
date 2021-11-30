@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -40,18 +41,20 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
         public async Task<AuthResponse> ObtenerUsuarioLogin(AuthRequestModel datosUsuario)
         {
+           
             AuthResponse usuario = new AuthResponse();
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string sql = "SELECT IDUsuario as Codigo, Nombre, ApellidoPaterno, " +
-                    "Correo FROM TBMUsuario WHERE Estado = 'A' AND Correo = @Correo AND Clave = @Clave";
+                string sql = "SELECT a.CodUsuario, RTRIM(b.Nombres) Nombres, RTRIM(b.ApellidoPaterno) ApellidoPaterno, a.Correo FROM TBMUsuario a " +
+                    " INNER JOIN PROD_UNILENE2.dbo.PersonaMast b ON a.CodUsuario = b.Persona " +
+                    "WHERE a.Estado = 'A' AND b.Estado = 'A' AND Usuario = @Usuario AND Clave = @Clave";
                 usuario = await connection.QueryFirstOrDefaultAsync<AuthResponse>(sql, datosUsuario);
 
                 connection.Dispose();
             }
-
             return usuario;
+
         }
 
         public async Task<int> CambiarClave(ActualizarClaveModel datos)

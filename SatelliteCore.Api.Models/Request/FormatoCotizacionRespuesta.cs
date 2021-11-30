@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SatelliteCore.Api.Models.Request
 {
@@ -10,5 +8,6 @@ namespace SatelliteCore.Api.Models.Request
         public string NroDocumento { get; set; }
         public List<Campo> Campos { get; set; }
         public string Detalle { get; set; }
+        public int CodUsuario { get; set; }
     }
 }

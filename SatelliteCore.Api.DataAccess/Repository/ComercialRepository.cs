@@ -80,11 +80,12 @@ namespace SatelliteCore.Api.DataAccess.Repository
         public async Task<int> RegistrarRespuestas(FormatoCotizacionRespuesta datos)
         {
             int IdCotizacionGenerada;
+
             try
             {
                 using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
                 {
-                    using (var result_db = await connection.QueryMultipleAsync("usp_RegistrarCotizacionGenerada", new { datos.IdFormato, datos.NroDocumento }, commandType: CommandType.StoredProcedure))
+                    using (var result_db = await connection.QueryMultipleAsync("usp_RegistrarCotizacionGenerada", new { datos.IdFormato, datos.NroDocumento, datos.CodUsuario }, commandType: CommandType.StoredProcedure))
                     {
                         IdCotizacionGenerada = result_db.Read<int>().First();
                     }

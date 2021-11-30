@@ -39,8 +39,8 @@ namespace SatelliteCore.Api.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Codigo.ToString()),
-                new Claim(ClaimTypes.Name, user.Nombre),
+                new Claim(ClaimTypes.NameIdentifier, user.CodUsuario.ToString()),
+                new Claim(ClaimTypes.Name, user.Nombres),
                 new Claim(ClaimTypes.GivenName, user.ApellidoPaterno),
                 new Claim(ClaimTypes.Email, user.Correo)
             };

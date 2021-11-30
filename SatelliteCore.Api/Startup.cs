@@ -32,10 +32,10 @@ namespace SatelliteCore.Api
             services.AddControllers();
             services.AddScoped<IAppConfig, AppConfig>();
 
-            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
-            {
-                builder.WithOrigins(_configuration.GetSection("JWTValidationParameters:Audience").Value).AllowAnyMethod().AllowAnyHeader();
-            }));
+            //services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+            //{
+            //    builder.WithOrigins(_configuration.GetSection("JWTValidationParameters:Audience").Value).AllowAnyMethod().AllowAnyHeader();
+            //}));
 
             //JWT
             var bytesKey = Encoding.UTF8.GetBytes(_configuration.GetSection("JWTValidationParameters:SecretKey").Value);  
@@ -75,12 +75,12 @@ namespace SatelliteCore.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseCors(builder => builder
-            //        .AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader());
+            app.UseCors(builder => builder
+                     .AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader());
 
-            app.UseCors("ApiCorsPolicy");
+            //app.UseCors("ApiCorsPolicy");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

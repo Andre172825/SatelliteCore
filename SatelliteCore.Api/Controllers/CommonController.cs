@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SatelliteCore.Api.Models.Entities;
 using SatelliteCore.Api.Models.Response;
 using SatelliteCore.Api.Services.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace SatelliteCore.Api.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class CommonController: ControllerBase
+    public class CommonController : ControllerBase
     {
         private readonly ICommonServices _commonService;
         public CommonController(ICommonServices commonService)
@@ -25,18 +24,8 @@ namespace SatelliteCore.Api.Controllers
         [HttpGet("ListarTipoDocumentoIdentidad")]
         public async Task<ActionResult> ListarTipoDocumentoIdentidad()
         {
-            try
-            {
-                IEnumerable<TipoDocumentoIdentidadEntity> lista = await _commonService.ListarTipoDocumentoIndentidad();
-                return Ok(lista);
-            }
-            catch(Exception ex)
-            {
-                ResponseModel<string> responseError =
-                     new ResponseModel<string>(false, ex.Message, ex.ToString());
-                return Ok(responseError);
-            }
-            
+            IEnumerable<TipoDocumentoIdentidadEntity> lista = await _commonService.ListarTipoDocumentoIndentidad();
+            return Ok(lista);
         }
 
         [HttpGet("ListarPaises")]
@@ -47,7 +36,7 @@ namespace SatelliteCore.Api.Controllers
             return Ok(lista);
         }
 
-        
+
         [HttpGet("ObtenerMenuUsuarioSesion")]
         public async Task<ActionResult> ObtenerMenuUsuarioSesion()
         {

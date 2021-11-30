@@ -38,7 +38,7 @@ namespace SatelliteCore.Api.Controllers
 
             UsuarioEntity usuario = await _usuarioService.ObtenerUsuario(user);
 
-            if(usuario == null)
+            if (usuario == null)
             {
                 ResponseModel<string> response = new ResponseModel<string>(false, "No se pudo encontrar al usuario", "");
                 return Ok(response);
@@ -62,10 +62,7 @@ namespace SatelliteCore.Api.Controllers
                 return BadRequest(responseError);
             }
 
-            (List<UsuarioEntity> lista, int totalRegistros) usuarios = await _usuarioService.ListarUsuarios(datos);
-
-            PaginacionModel<UsuarioEntity> response 
-                    = new PaginacionModel<UsuarioEntity>(usuarios.lista, datos.Pagina, datos.RegistrosPorPagina, usuarios.totalRegistros);
+            PaginacionModel<UsuarioEntity> response = await _usuarioService.ListarUsuarios(datos);
 
             return Ok(response);
 

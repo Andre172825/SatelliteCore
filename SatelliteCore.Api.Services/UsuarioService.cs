@@ -1,6 +1,7 @@
 ﻿using SatelliteCore.Api.CrossCutting.Helpers;
 using SatelliteCore.Api.DataAccess.Contracts.Repository;
 using SatelliteCore.Api.Models.Entities;
+using SatelliteCore.Api.Models.Generic;
 using SatelliteCore.Api.Models.Request;
 using SatelliteCore.Api.Models.Response;
 using SatelliteCore.Api.Services.Contracts;
@@ -35,9 +36,14 @@ namespace SatelliteCore.Api.Services
             return await _usuarioRepository.CambiarClave(datos);
         }
 
-        public async Task<(List<UsuarioEntity>, int)> ListarUsuarios(DatosListarUsuarioPaginado datos)
+        public async Task<PaginacionModel<UsuarioEntity>> ListarUsuarios(DatosListarUsuarioPaginado datos)
         {
-            return await _usuarioRepository.ListarUsuarios(datos);
+
+            (List<UsuarioEntity> lista, int totalRegistros) resultDb = await _usuarioRepository.ListarUsuarios(datos);
+
+            PaginacionModel<UsuarioEntity> response = new PaginacionModel<UsuarioEntity>(resultDb.lista, datos.Pagina, datos.RegistrosPorPagina, resultDb.totalRegistros);
+
+            return response;
         }
 
 

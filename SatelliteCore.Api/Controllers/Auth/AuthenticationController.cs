@@ -21,13 +21,13 @@ namespace SatelliteCore.Api.Controllers.Auth
         }
 
         [HttpPost("authenticateUser")]
-        public async Task<IActionResult> AuthenticateUser([FromBody] AuthRequestModel model)
+        public async Task<IActionResult> AuthenticateUser(AuthRequestModel model)
         {
 
             if (!ModelState.IsValid)
             {
                 var listaErrores = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage).ToList();
-                ResponseModel<IEnumerable<string>> responseError = 
+                ResponseModel<IEnumerable<string>> responseError =
                         new ResponseModel<IEnumerable<string>>(false, Constant.MODEL_VALIDATION_FAILED, listaErrores);
                 return BadRequest(responseError);
             }
@@ -43,5 +43,7 @@ namespace SatelliteCore.Api.Controllers.Auth
             ResponseModel<AuthResponse> responseSuccesss = new ResponseModel<AuthResponse>(true, Constant.MESSAGE_SUCCESS, usuario);
             return Ok(responseSuccesss);
         }
+
+
     }
 }
