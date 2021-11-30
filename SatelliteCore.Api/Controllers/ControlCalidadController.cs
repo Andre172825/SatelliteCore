@@ -58,10 +58,19 @@ namespace SatelliteCore.Api.Controllers
         [HttpPost("RegistrarCertificado")]
         public ActionResult RegistrarCertificado(CertificadoEsterilizacionEntity certificado)
         {
+            try
+            {
+                _controlCalidadServices.RegistrarCertificado(certificado);
 
-            _controlCalidadServices.RegistrarCertificado(certificado);
-
-            return Ok();
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                ResponseModel<string> response
+                        = new ResponseModel<string>(true, "No se completó el registro", ex.Message);
+                return BadRequest(response);
+            }
+            
 
         }
 
