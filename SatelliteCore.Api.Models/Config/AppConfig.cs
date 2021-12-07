@@ -17,6 +17,7 @@ namespace SatelliteCore.Api.Models.Config
         public string JWTAudience => _configuration.GetSection("JWTValidationParameters:Audience").Value;
         public string ReportControlDeCalidad => _configuration.GetSection("ReportServer:ControlDeCalidad").Value;
         public string ReportComercialFormatoCotizacion => _configuration.GetSection("ReportServer:Comercial").Value;
+        public string ReportRRHH => _configuration.GetSection("ReportServer:RRHH").Value;
 
     }
 }

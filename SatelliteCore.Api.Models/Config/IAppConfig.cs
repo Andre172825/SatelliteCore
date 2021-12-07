@@ -11,5 +11,6 @@ namespace SatelliteCore.Api.Models.Config
         string JWTAudience { get; }
         string ReportControlDeCalidad { get; }
         string ReportComercialFormatoCotizacion { get; }
+        string ReportRRHH { get; }
     }
 }

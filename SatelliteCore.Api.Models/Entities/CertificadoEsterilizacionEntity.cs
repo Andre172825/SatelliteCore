@@ -16,14 +16,16 @@ namespace SatelliteCore.Api.Models.Entities
         public string Marca { get; set; }
         public decimal Cantidad { get; set; }
         public string Equipo { get; set; }
-        public string UnidadMedida { get; set; }
+        public string CantidadUnidadMedida { get; set; }
         public string Estado { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaTermino { get; set; }
         public string Metodo { get; set; }
         public int Temperatura { get; set; }
         public int TiempoAireacion { get; set; }
+        public string TiempoAireacionUnidadMedida { get; set; }
         public int TiempoExposicion { get; set; }
+        public string TiempoExposicionUnidadMedida { get; set; }
         public decimal HRProceso { get; set; }
         public string Observaciones { get; set; }
         public string Conclusion { get; set; }
@@ -38,10 +40,10 @@ namespace SatelliteCore.Api.Models.Entities
         public bool ConformeTrazasOE { get; set; }
         public string TipoIB { get; set; }
         public string CodigoIB { get; set; }
-        //public int IDLoteIB { get; set; }
-        public string DescripcionIB { get; set; }
-        public string LoteIB { get; set; }
-        public string ExpiraIB { get; set; }
+        public int IDLoteIB { get; set; }
+        //public string DescripcionIB { get; set; }
+        //public string LoteIB { get; set; }
+        //public string ExpiraIB { get; set; }
         public int IBExpuestos { get; set; }
         public bool IBExpuestosResultado { get; set; }
         public int IBNoExpuestos { get; set; }
