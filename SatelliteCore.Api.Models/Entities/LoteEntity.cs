@@ -10,5 +10,6 @@ namespace SatelliteCore.Api.Models.Entities
         public string Descripcion { get; set; }
         public string Lote { get; set; }
         public string Expira { get; set; }
+        public int Identificador { get; set; }
     }
 }

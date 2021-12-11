@@ -44,10 +44,10 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%' " +
+                string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Grupo = @Identificador AND Descripcion LIKE '%' + @descripcion + '%' " +
                                 " ORDER BY Id OFFSET (@pagina - 1) * @registrosPorPagina ROWS FETCH NEXT @registrosPorPagina ROWS ONLY; " +
                                 "SELECT Count(1) FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%';";
-                using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion, datos.Pagina, datos.RegistrosPorPagina, }))
+                using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion, datos.Identificador, datos.Pagina, datos.RegistrosPorPagina, }))
                 {
                     result.ListaLotes = result_db.Read<LoteEntity>().ToList();
                     result.totalRegistros = result_db.Read<int>().First();
@@ -77,7 +77,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
                 parameter.Add("@fechaInicio", certificado.FechaInicio, DbType.DateTime, ParameterDirection.Input);
                 parameter.Add("@fechaTermino", certificado.FechaTermino, DbType.DateTime, ParameterDirection.Input);
                 parameter.Add("@metodo", certificado.Metodo, DbType.String, ParameterDirection.Input);
-                parameter.Add("@temperatura", certificado.Temperatura, DbType.Int32, ParameterDirection.Input);
+                parameter.Add("@temperatura", certificado.Temperatura, DbType.String, ParameterDirection.Input);
                 parameter.Add("@tiempoAireacion", certificado.TiempoAireacion, DbType.Int32, ParameterDirection.Input);
                 parameter.Add("@tiempoAireacionUnidadMedida", certificado.TiempoAireacionUnidadMedida, DbType.String, ParameterDirection.Input);
                 parameter.Add("@tiempoExposicion", certificado.TiempoExposicion, DbType.Int32, ParameterDirection.Input);
@@ -118,10 +118,10 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string sql = "INSERT INTO TBMCCLote(Descripcion, Lote, Expira)" +
-                             "VALUES(@Descripcion, @Lote, @Expira)";
+                string sql = "INSERT INTO TBMCCLote(Descripcion, Lote, Expira, Grupo)" +
+                             "VALUES(@Descripcion, @Lote, @Expira, @Identificador)";
 
-                result = await connection.ExecuteAsync(sql, new { lote.Descripcion, lote.Lote, lote.Expira });
+                result = await connection.ExecuteAsync(sql, new { lote.Descripcion, lote.Lote, lote.Expira, lote.Identificador });
                 connection.Dispose();
             }
 

@@ -21,7 +21,7 @@ namespace SatelliteCore.Api.Models.Entities
         public DateTime FechaInicio { get; set; }
         public DateTime FechaTermino { get; set; }
         public string Metodo { get; set; }
-        public int Temperatura { get; set; }
+        public string Temperatura { get; set; }
         public int TiempoAireacion { get; set; }
         public string TiempoAireacionUnidadMedida { get; set; }
         public int TiempoExposicion { get; set; }

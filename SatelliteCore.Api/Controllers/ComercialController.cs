@@ -82,6 +82,9 @@ namespace SatelliteCore.Api.Controllers
                     case 7:
                         Reporte = "07_Hospital+San+Bartolome&rs:Command=Render";
                         break;
+                    case 9:
+                        Reporte = "09_Essalud Rebagliati&rs:Command=Render";
+                        break;
                     case 10:
                         Reporte = "10_Essalud+Junin&rs:Command=Render";
                         break;
