@@ -44,7 +44,7 @@ namespace SatelliteCore.Api.DataAccess.Repository
 
             using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
             {
-                string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Grupo = @Identificador AND Descripcion LIKE '%' + @descripcion + '%' " +
+                string script = "SELECT Id, Descripcion, Lote, Expira FROM TBMCCLote WHERE Grupo = IIF(@Identificador = 0, Grupo, @Identificador) AND Descripcion LIKE '%' + @descripcion + '%' " +
                                 " ORDER BY Id OFFSET (@pagina - 1) * @registrosPorPagina ROWS FETCH NEXT @registrosPorPagina ROWS ONLY; " +
                                 "SELECT Count(1) FROM TBMCCLote WHERE Descripcion LIKE '%' + @descripcion + '%';";
                 using (var result_db = await connection.QueryMultipleAsync(script, new { datos.Descripcion, datos.Identificador, datos.Pagina, datos.RegistrosPorPagina, }))

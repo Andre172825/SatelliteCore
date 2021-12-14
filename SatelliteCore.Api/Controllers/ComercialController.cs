@@ -91,6 +91,9 @@ namespace SatelliteCore.Api.Controllers
                     case 11:
                         Reporte = "11_Essalud+Arequipa&rs:Command=Render";
                         break;
+                    case 13:
+                        Reporte = "13_Essalud Sabogal&rs:Command=Render";
+                        break;
                     default:
                         Reporte = "12_FormatoGeneral&rs:Command=Render";
                         break;
