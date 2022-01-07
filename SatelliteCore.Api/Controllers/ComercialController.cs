@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using SatelliteCore.Api.CrossCutting.Config;
 using SatelliteCore.Api.Models.Config;
@@ -14,18 +16,20 @@ using SatelliteCore.Api.Services.Contracts;
 
 namespace SatelliteCore.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ComercialController : ControllerBase
     {
         private readonly IComercialServices _comercialServices;
         private readonly IAppConfig _appConfig;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ComercialController(IComercialServices comercialServices, IAppConfig appConfig)
+        public ComercialController(IComercialServices comercialServices, IAppConfig appConfig, IWebHostEnvironment webHostEnvironment)
         {
             _comercialServices = comercialServices;
             _appConfig = appConfig;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost("ListarCotizaciones")]
@@ -130,6 +134,79 @@ namespace SatelliteCore.Api.Controllers
         {
             int respuesta = await _comercialServices.RegistrarRespuestas(datos);
             return Ok(respuesta);
+        }
+
+        [HttpPost("GenerarReporteProtocoloAnalisis")]
+        public async Task<ActionResult> GenerarReporteProtocoloAnalisis(DatosReporteProtocoloAnalisis datos)
+        {
+            try
+            {
+                string Reporte = "ProtocoloAnalisis&rs:Command=Render";
+                string Formato = "&rs:Format=pdf";
+                string Parametros = "&Lote=" + datos.Lote;
+
+                var theURL = _appConfig.ReportComercialProtocoloAnalisis + Reporte + Parametros + Formato;
+
+                var httpClientHandler = new HttpClientHandler()
+                {
+                    UseDefaultCredentials = true
+                };
+
+                HttpClient webClient = new HttpClient(httpClientHandler);
+
+                Byte[] result = await webClient.GetByteArrayAsync(theURL);
+                string base64String = Convert.ToBase64String(result, 0, result.Length);
+                ResponseModel<string> response
+                        = new ResponseModel<string>(true, "El reporte se generó correctamente", base64String);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                ResponseModel<string> response
+                        = new ResponseModel<string>(false, "El reporte no se generó", ex.Message);
+                return BadRequest(response);
+            }
+
+        }
+
+        [HttpPost("ListarProtocoloAnalisis")]
+        public async Task<ActionResult> ListarProtocoloAnalisis(DatosProtocoloAnalisisListado datos)
+        {
+            try
+            {
+                (List<DetalleProtocoloAnalisis> lista, int totalRegistros) result = await _comercialServices.ListarProtocoloAnalisis(datos);
+
+                PaginacionModel<DetalleProtocoloAnalisis> response
+                        = new PaginacionModel<DetalleProtocoloAnalisis>(result.lista, datos.Pagina, datos.RegistrosPorPagina, result.totalRegistros);
+
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                ResponseModel<string> response
+                        = new ResponseModel<string>(false, "La lista no se pudo cargar", ex.Message);
+                return BadRequest(response);
+            }           
+        }
+
+        [HttpPost("ListarClientes")]
+        public async Task<ActionResult> ListarClientes()
+        {
+            try
+            {
+                List<DetalleClientes> result = await _comercialServices.ListarClientes();
+                ResponseModel<List<DetalleClientes>> response 
+                        = new ResponseModel<List<DetalleClientes>>(true, "La lista se cargó correctamente", result);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                ResponseModel<string> response
+                        = new ResponseModel<string>(false, "La lista no se pudo cargar", ex.Message);
+                return BadRequest(response);
+            }
+
         }
     }
 }

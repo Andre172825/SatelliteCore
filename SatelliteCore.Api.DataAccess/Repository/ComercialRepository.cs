@@ -3,6 +3,7 @@ using SatelliteCore.Api.DataAccess.Contracts.Repository;
 using SatelliteCore.Api.Models.Config;
 using SatelliteCore.Api.Models.Entities;
 using SatelliteCore.Api.Models.Request;
+using SatelliteCore.Api.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -126,6 +127,37 @@ namespace SatelliteCore.Api.DataAccess.Repository
             {
                 return 0;
             }
+        }
+
+        public async Task<(List<DetalleProtocoloAnalisis>, int)> ListarProtocoloAnalisis(DatosProtocoloAnalisisListado datos)
+        {
+            (List<DetalleProtocoloAnalisis> ListaProtocoloAnalisis, int totalRegistros) result;
+
+            using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
+            {
+                using (var result_db = await connection.QueryMultipleAsync("usp_ListarProtocoloAnalisis", datos, commandType: CommandType.StoredProcedure))
+                {
+                    result.ListaProtocoloAnalisis = result_db.Read<DetalleProtocoloAnalisis>().ToList();
+                    result.totalRegistros = result_db.Read<int>().First();
+                }
+                connection.Dispose();
+            }
+            return result;
+        }
+
+        public async Task<List<DetalleClientes>> ListarClientes()
+        {
+            List<DetalleClientes>  result;
+
+            using (var connection = new SqlConnection(_appConfig.contextSatelliteDB))
+            {
+                using (var result_db = await connection.QueryMultipleAsync("usp_ListarClientes", commandType: CommandType.StoredProcedure))
+                {
+                    result = result_db.Read<DetalleClientes>().ToList();
+                }
+                connection.Dispose();
+            }
+            return result;
         }
     }
 }

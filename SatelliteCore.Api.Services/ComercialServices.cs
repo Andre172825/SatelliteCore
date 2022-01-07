@@ -31,5 +31,15 @@ namespace SatelliteCore.Api.Services
         {
             return await _comercialRepository.RegistrarRespuestas(datos);
         }
+
+        public async Task<(List<DetalleProtocoloAnalisis>, int)> ListarProtocoloAnalisis(DatosProtocoloAnalisisListado datos)
+        {
+            return await _comercialRepository.ListarProtocoloAnalisis(datos);
+        }
+        public async Task<List<DetalleClientes>> ListarClientes()
+        {
+            return await _comercialRepository.ListarClientes();
+        }
+
     }
 }
